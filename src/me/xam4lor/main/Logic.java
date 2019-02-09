@@ -2,6 +2,7 @@ package me.xam4lor.main;
 
 import me.xam4lor.graph.FunctionPlot;
 import me.xam4lor.graph.Plot;
+import me.xam4lor.graph.ScalarField;
 import me.xam4lor.mathematics.Point;
 import me.xam4lor.utils.Constants;
 import processing.core.PFont;
@@ -21,7 +22,8 @@ public class Logic {
 	}
 	
 	public void instanciate() {
-		this.plot = new FunctionPlot(m, -10, 10, -10, 10);
+		// this.plot = new FunctionPlot(m, -10, 10, -10, 10);
+		this.plot = new ScalarField(m, -10, 10, -10, 10);
 		
 		this.points = new Point[2];
 		this.points[0] = new Point(10, 10, 255, 255, 255);

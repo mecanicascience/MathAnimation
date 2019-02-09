@@ -10,3 +10,9 @@ Basically, you can create a simple 2D Plot with infinite functions and points nu
 ## Functionnalities
 This code is non-profit and under developpement. Once launched, press 'S' to start recording and 'Q' to stop.
 MathAnimation was developped using the processing language and with the ffmpeg librairy.
+
+
+## Screen Examples
+![A basic linear function and the function sin(x) * tan(x + theta) with a random theta](resources/demo/images/basic_functions.png)
+
+![A vector field with random sin() noise](resources/demo/images/basic_vector_field.png)
