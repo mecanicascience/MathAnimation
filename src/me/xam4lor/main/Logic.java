@@ -22,8 +22,8 @@ public class Logic {
 	}
 	
 	public void instanciate() {
-		// this.plot = new FunctionPlot(m, -10, 10, -10, 10);
-		this.plot = new ScalarField(m, -10, 10, -10, 10);
+		this.plot = new FunctionPlot(m, -10, 10, -10, 10);
+		// this.plot = new ScalarField(m, -10, 10, -10, 10);
 		
 		this.points = new Point[2];
 		this.points[0] = new Point(10, 10, 255, 255, 255);
