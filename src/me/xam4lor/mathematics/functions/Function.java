@@ -1,10 +1,11 @@
-package me.xam4lor.mathematics;
+package me.xam4lor.mathematics.functions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.mathematics.Point;
 
 public abstract class Function {
 	private Plot plot;

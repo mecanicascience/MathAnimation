@@ -1,4 +1,4 @@
-package me.xam4lor.mathematics;
+package me.xam4lor.mathematics.functions;
 
 import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;

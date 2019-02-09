@@ -1,17 +1,18 @@
-package me.xam4lor.graph;
+package me.xam4lor.graph.plots;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.xam4lor.graph.Plot;
 import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.Point;
 import me.xam4lor.mathematics.Scalar;
 
-public class ScalarField extends Plot {
+public class ScalarPlot extends Plot {
 	private List<Scalar> scalars;
 	
-	public ScalarField(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
+	public ScalarPlot(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
 		super(m, xmin, xmax, ymin, ymax);
 		
 		scalars = new ArrayList<Scalar>();
@@ -28,10 +29,10 @@ public class ScalarField extends Plot {
 	}
 	
 	@Override
-	public void draw(boolean showAxes, Point[] points) {
-		if(showAxes) this.showAxes(1);
+	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
+		super.draw(showAxes, showGrid, points, scalars);
 		
-		for (Scalar s : scalars) {
+		for (Scalar s : this.scalars) {
 			m.noFill();
 			m.stroke(s.origin.col.x, s.origin.col.y, s.origin.col.z);
 			m.strokeWeight(2);

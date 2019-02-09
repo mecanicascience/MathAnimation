@@ -1,5 +1,7 @@
 package me.xam4lor.graph;
 
+import java.text.DecimalFormat;
+
 import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.Point;
 import me.xam4lor.mathematics.Scalar;
@@ -56,6 +58,15 @@ public abstract class Plot {
 		m.popMatrix();
 	}
 	
+	protected void text(String text, float x, float y) {
+		m.pushMatrix();
+		
+		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
+		m.text(text, x * 2 * this.xUnit + offsetX, -2 * y * this.yUnit - offsetY);
+		
+		m.popMatrix();
+	}
+	
 	/**
 	 * Draw a line
 	 * @param x
@@ -92,19 +103,17 @@ public abstract class Plot {
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
 		m.line(
 			(float) vec.origin.pos.x * 2 * this.xUnit + offsetX,
-			(float) vec.origin.pos.y * 2 * this.yUnit + offsetY,
+			(float) -vec.origin.pos.y * 2 * this.yUnit + offsetY,
 			(float) (vec.origin.pos.x + vec.r * Math.cos(vec.theta)) * 2 * this.xUnit + offsetX,
-			(float) (vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
+			(float) -(vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
 		);
 		
-		// m.rotate(vec.theta * PConstants.PI / 180);
 		m.translate(
-				(float) (vec.origin.pos.x + vec.r * Math.cos(vec.theta)) * 2 * this.xUnit + offsetX, 
-				(float) (vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
+			(float) (vec.origin.pos.x + vec.r * Math.cos(vec.theta)) * 2 * this.xUnit + offsetX, 
+			(float) -(vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
 		);
-		m.fill(255);
 		m.rotate(vec.theta - 1.58f);
-		m.triangle(-vec.r * Constants.VEC_SIZE_ARROW, 0, 0, vec.r * Constants.VEC_SIZE_ARROW * 2, vec.r * Constants.VEC_SIZE_ARROW, 0);
+		m.triangle(-vec.r * Constants.VEC_SIZE_ARROW, 0, 0, -vec.r * Constants.VEC_SIZE_ARROW * 2, vec.r * Constants.VEC_SIZE_ARROW, 0);
 		
 		m.popMatrix();
 	}
@@ -115,40 +124,42 @@ public abstract class Plot {
 	/**
 	 * Draw axes
 	 */
-	protected void showAxes(float graduationLevel) {
+	protected void showAxes(float graduationLevel, boolean showGrid) {
 		m.pushMatrix();
 		
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
-		
+		float curX, curY;
 		
 		
 		// big graduations
-		m.noFill();
-		m.stroke(18, 110, 195, 110);
-		m.strokeWeight(1f);
-		
-		float curX = this.xmin;
-		while(curX <= this.xmax) {
-			if(curX != 0)
-				m.line(
-					curX * 2 * this.xUnit + offsetX,
-					-Constants.HEIGHT,
-					curX * 2 * this.xUnit + offsetX,
-					Constants.HEIGHT
-				);
-			curX += graduationLevel;
-		}
-		
-		float curY = this.ymin;
-		while(curY <= this.ymax) {
-			if(curY != 0)
-				m.line(
-					-Constants.WIDTH,
-					-curY * 2 * this.yUnit + offsetY,
-					Constants.WIDTH,
-					-curY * 2 * this.yUnit + offsetY
-				);
-			curY += graduationLevel;
+		if(showGrid) {
+			m.noFill();
+			m.stroke(18, 110, 195, 110);
+			m.strokeWeight(1f);
+			
+			curX = this.xmin;
+			while(curX <= this.xmax) {
+				if(curX != 0)
+					m.line(
+						curX * 2 * this.xUnit + offsetX,
+						-Constants.HEIGHT,
+						curX * 2 * this.xUnit + offsetX,
+						Constants.HEIGHT
+					);
+				curX += graduationLevel;
+			}
+			
+			curY = this.ymin;
+			while(curY <= this.ymax) {
+				if(curY != 0)
+					m.line(
+						-Constants.WIDTH,
+						-curY * 2 * this.yUnit + offsetY,
+						Constants.WIDTH,
+						-curY * 2 * this.yUnit + offsetY
+					);
+				curY += graduationLevel;
+			}
 		}
 		
 		
@@ -166,7 +177,7 @@ public abstract class Plot {
 		// ticks of central axe
 		m.stroke(255, 255, 255, 150);
 		m.textFont(Constants.mainFont, 16);
-		m.fill(255, 255, 255, 150);
+		m.fill(255, 255, 255, 120);
 		
 		curX = this.xmin;
 		while(curX <= this.xmax) {
@@ -218,6 +229,59 @@ public abstract class Plot {
 	public int getYMin() { return this.ymin; }
 	
 
-	public abstract void draw(boolean showAxes, Point[] points);
+	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
+		if(showAxes) this.showAxes(1, showGrid);
+		
+		for (Point p : points) {
+			m.noFill();
+			m.stroke(p.col.x, p.col.y, p.col.z);
+			m.strokeWeight(10);
+			this.point(p.pos.x, p.pos.y);
+			
+			if(p.showName) {
+				m.textFont(Constants.mainFont, 19);
+				m.fill(p.col.x, p.col.y, p.col.z, 200);
+				this.text(
+					"A(" + new DecimalFormat("#.##").format(p.pos.x) + " ; " + new DecimalFormat("#.##").format(p.pos.y) + ")",
+					p.pos.x + 0.2f,
+					p.pos.y + 0.15f
+				);
+			}
+			
+			if(p.showXGraphC) {
+				m.strokeWeight(2);
+				m.textFont(Constants.mainFont, 16);
+				this.line(p.pos.x, 0, p.pos.x, p.pos.y);
+				if(p.pos.y > 0) {
+					this.text("x=" + new DecimalFormat("#.##").format(p.pos.x), p.pos.x + 0.1f, 0.2f);
+				}
+				else {
+					this.text("x=" + new DecimalFormat("#.##").format(p.pos.x), p.pos.x - 0.3f, 0.2f);
+				}
+			}
+			
+			if(p.showYGraphC) {
+				m.strokeWeight(2);
+				m.textFont(Constants.mainFont, 16);
+				this.line(0, p.pos.y, p.pos.x, p.pos.y);
+				if(p.pos.x > 0) {
+					this.text("y=" + new DecimalFormat("#.##").format(p.pos.y), -1.05f, p.pos.y - 0.1f);
+				}
+				else {
+					this.text("y=" + new DecimalFormat("#.##").format(p.pos.y), -1.05f, p.pos.y - 0.4f);
+				}
+			}
+		}
+		
+		
+		for (Scalar s : scalars) {
+			m.stroke(s.origin.col.x, s.origin.col.y, s.origin.col.z);
+			m.fill(s.origin.col.x, s.origin.col.y, s.origin.col.z);
+			m.strokeWeight(2);
+			
+			this.scalar(s);
+		}
+	}
+	
 	public abstract void update();
 }

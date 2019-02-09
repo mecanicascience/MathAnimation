@@ -1,13 +1,15 @@
-package me.xam4lor.graph;
+package me.xam4lor.graph.plots;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import me.xam4lor.graph.Plot;
 import me.xam4lor.main.ProcessingMain;
-import me.xam4lor.mathematics.Function;
-import me.xam4lor.mathematics.LinearFunction;
 import me.xam4lor.mathematics.Point;
-import me.xam4lor.mathematics.TestFunction;
+import me.xam4lor.mathematics.Scalar;
+import me.xam4lor.mathematics.functions.Function;
+import me.xam4lor.mathematics.functions.LinearFunction;
+import me.xam4lor.mathematics.functions.TestFunction;
 
 public class FunctionPlot extends Plot {
 	private List<Function> functions;
@@ -28,8 +30,8 @@ public class FunctionPlot extends Plot {
 	}
 	
 	@Override
-	public void draw(boolean showAxes, Point[] points) {
-		if(showAxes) this.showAxes(1);
+	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
+		super.draw(showAxes, showGrid, points, scalars);
 		
 		for (Function function : functions) {
 			Point[] a = function.points.toArray(new Point[function.points.size()]);
