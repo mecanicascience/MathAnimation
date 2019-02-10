@@ -4,12 +4,11 @@ package me.xam4lor.graph.plots;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.objects.Point;
 import me.xam4lor.mathematics.objects.Scalar;
 
-public class PlotScalar extends Plot {
+public class PlotScalar extends Plot2D {
 	/** List of all the scalar */
 	private List<Scalar> scal;
 	
@@ -28,8 +27,6 @@ public class PlotScalar extends Plot {
 	 */
 	public PlotScalar(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
 		super(m, xmin, xmax, ymin, ymax);
-		
-		scal = new ArrayList<Scalar>();
 		
 		this.instanciateScalarField(1);
 	}
@@ -65,6 +62,8 @@ public class PlotScalar extends Plot {
 	 * 	Level of details of scalar number
 	 */
 	private void instanciateScalarField(int precisionLevel) {
+		this.scal = new ArrayList<Scalar>();
+		
 		int xCur = this.xmin;
 		while(xCur <= this.xmax) {
 			int yCur = this.ymin;

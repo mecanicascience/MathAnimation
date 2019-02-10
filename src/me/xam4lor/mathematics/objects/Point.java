@@ -2,8 +2,8 @@ package me.xam4lor.mathematics.objects;
 
 import java.text.DecimalFormat;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.graph.plots.Plot2D;
 import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.utils.Constants;
 
@@ -137,7 +137,7 @@ public class Point {
 	 * @param p
 	 * 	Plot where the point will be drawn
 	 */
-	public void draw(ProcessingMain m, Plot p) {
+	public void draw(ProcessingMain m, Plot2D p) {
 		m.noFill();
 		m.stroke(this.col.x, this.col.y, this.col.z);
 		m.strokeWeight(10);

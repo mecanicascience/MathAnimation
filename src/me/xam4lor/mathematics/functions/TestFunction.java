@@ -1,12 +1,12 @@
 package me.xam4lor.mathematics.functions;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.graph.plots.Plot2D;
 
 public class TestFunction extends Function {
 	public float theta;
 	
-	public TestFunction(Plot plot) {
+	public TestFunction(Plot2D plot) {
 		super(plot, new Vector(0, 200), new Vector(0, 200), 0.01f, new Vector(37, 168, 238));
 		
 		theta = 0;

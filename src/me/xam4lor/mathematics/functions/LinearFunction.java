@@ -1,7 +1,7 @@
 package me.xam4lor.mathematics.functions;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.graph.plots.Plot2D;
 
 public class LinearFunction extends Function {
 	private float a;
@@ -14,7 +14,7 @@ public class LinearFunction extends Function {
 	 * @param a
 	 * @param b
 	 */
-	public LinearFunction(Plot plot, float a, float b) {
+	public LinearFunction(Plot2D plot, float a, float b) {
 		super(plot, null, null, 0.01f, new Vector(218, 195, 22));
 		
 		this.a = a;

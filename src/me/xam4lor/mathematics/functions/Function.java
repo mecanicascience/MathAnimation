@@ -3,14 +3,14 @@ package me.xam4lor.mathematics.functions;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.graph.plots.Plot2D;
 import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.objects.Point;
 
 public abstract class Function {
 	/** Plot on which the function is displayed */
-	private Plot plot;
+	private Plot2D plot;
 	/** Incrementation value of X when drawing the function */
 	private float precisionLevel;
 	
@@ -38,7 +38,7 @@ public abstract class Function {
 	 * @param color
 	 * 	Color of the function
 	 */
-	public Function(Plot plot, Vector defIntervalX, Vector defIntervalY, float precisionLevel, Vector color) {
+	public Function(Plot2D plot, Vector defIntervalX, Vector defIntervalY, float precisionLevel, Vector color) {
 		this.plot = plot;
 		this.precisionLevel = precisionLevel;
 		this.color = color;
@@ -121,7 +121,7 @@ public abstract class Function {
 
 
 
-	public void draw(ProcessingMain m, Plot plot) {
+	public void draw(ProcessingMain m, Plot2D plot) {
 		Point[] a = this.getPoints().toArray(new Point[this.getPoints().size()]);
 		for (int i = 0; i < a.length - 1; i++) {
 			Point p = a[i];

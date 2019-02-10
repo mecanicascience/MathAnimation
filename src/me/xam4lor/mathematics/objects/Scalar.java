@@ -1,6 +1,6 @@
 package me.xam4lor.mathematics.objects;
 
-import me.xam4lor.graph.Plot;
+import me.xam4lor.graph.plots.Plot2D;
 import me.xam4lor.main.ProcessingMain;
 
 public class Scalar {
@@ -40,7 +40,7 @@ public class Scalar {
 	 * @param p
 	 * 	Plot to be drawn on
 	 */
-	public void draw(ProcessingMain m, Plot p) {
+	public void draw(ProcessingMain m, Plot2D p) {
 		m.stroke(this.origin.getColorR(), this.origin.getColorG(), this.origin.getColorB());
 		m.fill(this.origin.getColorR(), this.origin.getColorG(), this.origin.getColorB());
 		m.strokeWeight(2);

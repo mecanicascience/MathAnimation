@@ -3,8 +3,8 @@ package me.xam4lor.main;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.plots.Plot2D;
+import me.xam4lor.graph.plots.PlotScalar;
 import me.xam4lor.mathematics.functions.LinearFunction;
 import me.xam4lor.mathematics.functions.TestFunction;
 import me.xam4lor.mathematics.objects.Path;
@@ -16,7 +16,7 @@ public class Logic {
 	/** Main Processing instance */
 	private ProcessingMain m;
 	/** Main Plot displayed */
-	private Plot plot;
+	private Plot2D plot;
 	
 	/** List of all points */
 	private List<Point> points;
@@ -44,7 +44,8 @@ public class Logic {
 	 * Instanciate the main logic
 	 */
 	private void instanciate() {
-		this.plot = new Plot2D(m, -10, 20, -10, 20);
+		//this.plot = new Plot2D(m, -10, 20, -10, 20);
+		this.plot = new PlotScalar(m, -10, 20, -10, 20);
 		this.plot.setFunctions(new LinearFunction(this.plot, 2, 3), new TestFunction(this.plot));
 		
 
