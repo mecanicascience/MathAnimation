@@ -8,7 +8,7 @@ public class LinearFunction extends Function {
 	private float b;
 	
 	public LinearFunction(Plot plot) {
-		super(plot, 0.01f, new Vector(218, 195, 22));
+		super(plot, null, null, 0.01f, new Vector(218, 195, 22));
 		
 		this.a = 2;
 		this.b = 0;
@@ -22,11 +22,6 @@ public class LinearFunction extends Function {
 	@Override
 	public float getYOfX(float val) {
 		return a * val + b;
-	}
-
-	@Override
-	public boolean isCoupleInInterval(float x, float y) {
-		return true;
 	}
 
 //	@Override

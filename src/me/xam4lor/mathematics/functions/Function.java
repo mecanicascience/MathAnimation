@@ -12,6 +12,12 @@ public abstract class Function {
 	private Plot plot;
 	/** Incrementation value of X when drawing the function */
 	private float precisionLevel;
+	
+	/** x interval of definition (null for none) */
+	private Vector defIntervalX;
+	/** y interval of definition (null for none) */
+	private Vector defIntervalY;
+	
 	/** Color of the function */
 	private Vector color;
 	/** List of all the displayed points to draw the function */
@@ -22,15 +28,21 @@ public abstract class Function {
 	 * Create a function
 	 * @param plot
 	 * 	Plot on which the function is displayed
+	 * @param defIntervalX
+	 * 	x interval of definition (null for none)
+	 * @param defIntervalY 
+	 * 	y interval of definition (null for none)
 	 * @param precisionLevel
 	 * 	Incrementation value of X when drawing the function
 	 * @param color
 	 * 	Color of the function
 	 */
-	public Function(Plot plot, float precisionLevel, Vector color) {
+	public Function(Plot plot, Vector defIntervalX, Vector defIntervalY, float precisionLevel, Vector color) {
 		this.plot = plot;
 		this.precisionLevel = precisionLevel;
 		this.color = color;
+		this.defIntervalX = defIntervalX;
+		this.defIntervalY = defIntervalX;
 		
 		this.instanciate();
 	}
@@ -66,19 +78,35 @@ public abstract class Function {
 	
 	
 	/**
-	 * TODO : post the definition interval on the function params
 	 * Check if a couple of points is on the interval of definition of the function
 	 * @param x
 	 * @param y
 	 * @return true if they are
 	 */
-	public abstract boolean isCoupleInInterval(float x, float y);
+	public boolean isCoupleInInterval(float x, float y) {
+		boolean belong = true;
+		
+		if(this.defIntervalX != null) {
+			if(x > defIntervalX.x && x < defIntervalX.y) belong = true;
+			else return false;
+		}
+		else belong = true;
+		
+		if(this.defIntervalY != null) {
+			if(y > defIntervalY.x && y < defIntervalY.y) belong = true;
+			else return false;
+		}
+		else belong = true;
+		
+		return belong;
+	}
 	
 	/**
 	 * @param x
 	 * @return f(x)
 	 */
 	public abstract float getYOfX(float x);
+	
 	
 //	public abstract float getSolutionArcIntersectForR(int R);
 	
