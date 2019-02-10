@@ -60,6 +60,29 @@ public abstract class Function {
 		}
 	}
 	
+	/**
+	 * Draw the function
+	 * @param m
+	 * 	ProcessingMain instance
+	 * @param plot
+	 * 	Plot2D main
+	 */
+	public void draw(ProcessingMain m, Plot2D plot) {
+		Point[] a = this.getPoints().toArray(new Point[this.getPoints().size()]);
+		for (int i = 0; i < a.length - 1; i++) {
+			Point p = a[i];
+
+			if(!this.isCoupleInInterval(p.getX(), p.getY())) continue;
+			
+			m.noFill();
+			m.stroke(this.getR(), this.getG(), this.getB());
+			m.strokeWeight(2);
+			plot.line(p.getX(), p.getY(), a[i + 1].getX(), a[i + 1].getY());
+		}
+	}
+	
+	
+	
 	
 	
 	/**
@@ -118,20 +141,4 @@ public abstract class Function {
 	public float getR() { return this.color.x; }
 	public float getG() { return this.color.y; }
 	public float getB() { return this.color.z; }
-
-
-
-	public void draw(ProcessingMain m, Plot2D plot) {
-		Point[] a = this.getPoints().toArray(new Point[this.getPoints().size()]);
-		for (int i = 0; i < a.length - 1; i++) {
-			Point p = a[i];
-
-			if(!this.isCoupleInInterval(p.getX(), p.getY())) continue;
-			
-			m.noFill();
-			m.stroke(this.getR(), this.getG(), this.getB());
-			m.strokeWeight(2);
-			plot.line(p.getX(), p.getY(), a[i + 1].getX(), a[i + 1].getY());
-		}
-	}
 }

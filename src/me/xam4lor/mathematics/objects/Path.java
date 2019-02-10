@@ -87,4 +87,14 @@ public class Path {
 	public static Path createPath() {
 		return new Path();
 	}
+	
+	public static Path createPath(float... vals) {
+		Path path = Path.createPath();
+		
+		if(vals.length % 3 != 0) throw new RuntimeException("Path creation must have for each keyframe a time, a x and a y position.");
+		
+		for (int i = 0; i < vals.length - 1; i++) if(i % 3 == 0) path.addKeyFrame(vals[i], vals[i + 1], vals[i + 2]);
+		
+		return path;
+	}
 }
