@@ -1,19 +1,21 @@
 package me.xam4lor.graph;
 
-import java.text.DecimalFormat;
-
 import me.xam4lor.main.ProcessingMain;
-import me.xam4lor.mathematics.Point;
-import me.xam4lor.mathematics.Scalar;
+import me.xam4lor.mathematics.objects.Point;
+import me.xam4lor.mathematics.objects.Scalar;
 import me.xam4lor.utils.Constants;
+import processing.core.PConstants;
 
 public abstract class Plot {
+	/** Main instance */
 	protected ProcessingMain m;
+	/** x and y plot values */
 	protected int xmin, xmax, ymin, ymax;
+	/** x and y plot units */
 	protected int xUnit, yUnit, offsetX, offsetY;
 	
 	/**
-	 * Plot instanciation
+	 * Plot instance
 	 * @param m
 	 * 	Main Instance
 	 * @param xmin
@@ -44,28 +46,84 @@ public abstract class Plot {
 	
 	
 	
+	
+	/**
+	 * Update the plot
+	 * @param points
+	 * 	List of all points
+	 * @param scalars
+	 * 	List of all scalars
+	 */
+	public void update(Point[] points, Scalar[] scalars) {
+		for (Point p : points) p.update();
+		for (Scalar s : scalars) s.update();
+	}
+
+	/**
+	 * Draw the plot to the screen
+	 * @param showAxes
+	 * 	true : show Axes
+	 * @param showGrid
+	 * 	true : show Grid
+	 * @param points
+	 * 	List of all points
+	 * @param scalars
+	 * 	List of all scalars
+	 */
+	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
+		if(showAxes) this.showAxes(1, showGrid);
+		
+		for (Point p : points) p.draw(m, this);
+		for (Scalar s : scalars) s.draw(m, this);
+	}
+	
+	
+	
+	
 	/**
 	 * Draw a point
 	 * @param x
 	 * @param y
 	 */
-	protected void point(float x, float y) {
+	public void point(float x, float y) {
 		m.pushMatrix();
 		
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
-		m.point(x * 2 * this.xUnit + offsetX, -2 * y * this.yUnit - offsetY);
+		m.point(
+			x * 2 * this.xUnit + offsetX,
+			-2 * y * this.yUnit + offsetY
+		);
 		
 		m.popMatrix();
 	}
 	
-	protected void text(String text, float x, float y) {
+	/**
+	 * Draw a scalar vector
+	 * @param vec
+	 * 	Scalar vector
+	 */
+	public void scalar(Scalar vec) {
 		m.pushMatrix();
 		
+		m.strokeWeight(Math.abs(vec.getR()) * 2);
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
-		m.text(text, x * 2 * this.xUnit + offsetX, -2 * y * this.yUnit - offsetY);
+		m.line(
+			(float) vec.getX() * 2 * this.xUnit + offsetX,
+			(float) -vec.getY() * 2 * this.yUnit + offsetY,
+			(float) (vec.getX() + vec.getR() * Math.cos(vec.getTheta())) * 2 * this.xUnit + offsetX,
+			(float) -(vec.getY() + vec.getR() * Math.sin(vec.getTheta())) * 2 * this.yUnit + offsetY
+		);
+		
+		m.translate(
+			(float) (vec.getX() + vec.getR() * Math.cos(vec.getTheta())) * 2 * this.xUnit + offsetX, 
+			(float) -(vec.getY() + vec.getR() * Math.sin(vec.getTheta())) * 2 * this.yUnit + offsetY
+		);
+		m.rotate(vec.getTheta() - 1.58f);
+		m.triangle(-vec.getR() * Constants.VEC_SIZE_ARROW, 0, 0, -vec.getR() * Constants.VEC_SIZE_ARROW * 2, vec.getR() * Constants.VEC_SIZE_ARROW, 0);
 		
 		m.popMatrix();
 	}
+	
 	
 	/**
 	 * Draw a line
@@ -74,46 +132,69 @@ public abstract class Plot {
 	 * @param x2
 	 * @param y2
 	 */
-	protected void line(float x, float y, float x2, float y2) {
+	public void line(float x, float y, float x2, float y2) {
 		m.pushMatrix();
 		
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
 		m.line(
 			x * 2 * this.xUnit + offsetX,
-			-2 * y * this.yUnit - offsetY,
+			-2 * y * this.yUnit + offsetY,
 			x2 * 2 * this.xUnit + offsetX,
-			-2 * y2 * this.yUnit - offsetY
+			-2 * y2 * this.yUnit + offsetY
 		);
 		
 		m.popMatrix();
 	}
 	
-	
-	
-	
 	/**
-	 * Draw a scalar vector
-	 * @param vec
-	 * 	Scalar vector
+	 * Draw an arc
+	 * @param x
+	 * 	X coordinate of the circle center
+	 * @param y
+	 * 	Y coordinate of the circle center
+	 * @param width
+	 * 	Width of the circle
+	 * @param height
+	 * 	Height of the circle
+	 * @param startAngle
+	 * 	Start angle of the arc in radians
+	 * @param stopAngle
+	 * 	Stop angle of the arc in radians
 	 */
-	protected void scalar(Scalar vec) {
+	public void arc(float x, float y, float width, float height, float startAngle, float stopAngle) {
 		m.pushMatrix();
 		
-		m.strokeWeight(Math.abs(vec.r) * 2);
 		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
-		m.line(
-			(float) vec.origin.pos.x * 2 * this.xUnit + offsetX,
-			(float) -vec.origin.pos.y * 2 * this.yUnit + offsetY,
-			(float) (vec.origin.pos.x + vec.r * Math.cos(vec.theta)) * 2 * this.xUnit + offsetX,
-			(float) -(vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
+		
+		m.arc(
+			x * 2 * this.xUnit + offsetX,
+			y * -2 * this.yUnit + offsetY,
+			width * 4 * this.xUnit,
+			height * 4 * this.yUnit,
+			PConstants.TWO_PI - stopAngle - startAngle,
+			PConstants.TWO_PI
 		);
 		
-		m.translate(
-			(float) (vec.origin.pos.x + vec.r * Math.cos(vec.theta)) * 2 * this.xUnit + offsetX, 
-			(float) -(vec.origin.pos.y + vec.r * Math.sin(vec.theta)) * 2 * this.yUnit + offsetY
+		m.popMatrix();
+	}
+	
+	
+	/**
+	 * Draw a text on the screen
+	 * @param text
+	 * 	Text to be displayed
+	 * @param x
+	 * @param y
+	 */
+	public void text(String text, float x, float y) {
+		m.pushMatrix();
+		
+		m.translate(Constants.WIDTH / 2, Constants.HEIGHT / 2);
+		m.text(
+			text,
+			x * 2 * this.xUnit + offsetX,
+			-2 * y * this.yUnit + offsetY
 		);
-		m.rotate(vec.theta - 1.58f);
-		m.triangle(-vec.r * Constants.VEC_SIZE_ARROW, 0, 0, -vec.r * Constants.VEC_SIZE_ARROW * 2, vec.r * Constants.VEC_SIZE_ARROW, 0);
 		
 		m.popMatrix();
 	}
@@ -121,8 +202,14 @@ public abstract class Plot {
 	
 	
 	
+	
+	
 	/**
-	 * Draw axes
+	 * Render axes
+	 * @param graduationLevel
+	 * 	Tick level (float)
+	 * @param showGrid
+	 * 	true : display Grid
 	 */
 	protected void showAxes(float graduationLevel, boolean showGrid) {
 		m.pushMatrix();
@@ -227,61 +314,4 @@ public abstract class Plot {
 	public int getXMin() { return this.xmin; }
 	public int getYMax() { return this.ymax; }
 	public int getYMin() { return this.ymin; }
-	
-
-	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
-		if(showAxes) this.showAxes(1, showGrid);
-		
-		for (Point p : points) {
-			m.noFill();
-			m.stroke(p.col.x, p.col.y, p.col.z);
-			m.strokeWeight(10);
-			this.point(p.pos.x, p.pos.y);
-			
-			if(p.showName) {
-				m.textFont(Constants.mainFont, 19);
-				m.fill(p.col.x, p.col.y, p.col.z, 200);
-				this.text(
-					"A(" + new DecimalFormat("#.##").format(p.pos.x) + " ; " + new DecimalFormat("#.##").format(p.pos.y) + ")",
-					p.pos.x + 0.2f,
-					p.pos.y + 0.15f
-				);
-			}
-			
-			if(p.showXGraphC) {
-				m.strokeWeight(2);
-				m.textFont(Constants.mainFont, 16);
-				this.line(p.pos.x, 0, p.pos.x, p.pos.y);
-				if(p.pos.y > 0) {
-					this.text("x=" + new DecimalFormat("#.##").format(p.pos.x), p.pos.x + 0.1f, 0.2f);
-				}
-				else {
-					this.text("x=" + new DecimalFormat("#.##").format(p.pos.x), p.pos.x - 0.3f, 0.2f);
-				}
-			}
-			
-			if(p.showYGraphC) {
-				m.strokeWeight(2);
-				m.textFont(Constants.mainFont, 16);
-				this.line(0, p.pos.y, p.pos.x, p.pos.y);
-				if(p.pos.x > 0) {
-					this.text("y=" + new DecimalFormat("#.##").format(p.pos.y), -1.05f, p.pos.y - 0.1f);
-				}
-				else {
-					this.text("y=" + new DecimalFormat("#.##").format(p.pos.y), -1.05f, p.pos.y - 0.4f);
-				}
-			}
-		}
-		
-		
-		for (Scalar s : scalars) {
-			m.stroke(s.origin.col.x, s.origin.col.y, s.origin.col.z);
-			m.fill(s.origin.col.x, s.origin.col.y, s.origin.col.z);
-			m.strokeWeight(2);
-			
-			this.scalar(s);
-		}
-	}
-	
-	public abstract void update();
 }

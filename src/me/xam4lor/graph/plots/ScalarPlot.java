@@ -6,25 +6,43 @@ import java.util.List;
 
 import me.xam4lor.graph.Plot;
 import me.xam4lor.main.ProcessingMain;
-import me.xam4lor.mathematics.Point;
-import me.xam4lor.mathematics.Scalar;
+import me.xam4lor.mathematics.objects.Point;
+import me.xam4lor.mathematics.objects.Scalar;
 
 public class ScalarPlot extends Plot {
-	private List<Scalar> scalars;
+	/** List of all the scalar */
+	private List<Scalar> scal;
 	
+	/**
+	 * Create a plot that draw functions
+	 * @param m
+	 * 	ProcessingMain instance
+	 * @param xmin
+	 * 	Min X value rendered
+	 * @param xmax
+	 * 	Max X value rendered
+	 * @param ymin
+	 * 	Min Y value rendered
+	 * @param ymax
+	 * 	Max Y value rendered
+	 */
 	public ScalarPlot(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
 		super(m, xmin, xmax, ymin, ymax);
 		
-		scalars = new ArrayList<Scalar>();
+		scal = new ArrayList<Scalar>();
 		
 		this.instanciateScalarField(1);
 	}
 	
+	
+	
 	@Override
-	public void update() {
-		for (Scalar s : scalars) {
-			s.theta += 0.01f;
-			s.r = (float) ((float) Math.sin(s.theta - s.origin.pos.x) / 4);
+	public void update(Point[] points, Scalar[] scalars) {
+		super.update(points, scalars);
+		
+		for (Scalar s : this.scal) {
+			s.setTheta(0.01f + s.getTheta());
+			s.setR((float) ((float) Math.sin(s.getTheta() - s.getX()) / 4));
 		}
 	}
 	
@@ -32,23 +50,27 @@ public class ScalarPlot extends Plot {
 	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
 		super.draw(showAxes, showGrid, points, scalars);
 		
-		for (Scalar s : this.scalars) {
+		for (Scalar s : this.scal) {
 			m.noFill();
-			m.stroke(s.origin.col.x, s.origin.col.y, s.origin.col.z);
+			m.stroke(s.getColorR(), s.getColorG(), s.getColorB());
 			m.strokeWeight(2);
 			this.scalar(s);
 		}
 	}
 
 
-	
+	/**
+	 * Instanciate the scalar Field
+	 * @param precisionLevel
+	 * 	Level of details of scalar number
+	 */
 	private void instanciateScalarField(int precisionLevel) {
 		int xCur = this.xmin;
 		while(xCur <= this.xmax) {
 			int yCur = this.ymin;
 			
 			while(yCur <= this.ymax) {
-				this.scalars.add(new Scalar(new Point(xCur, yCur), 0.1f, xCur + yCur));
+				this.scal.add(new Scalar(new Point(xCur, yCur), 0.1f, xCur + yCur));
 				yCur += precisionLevel;
 			}
 			

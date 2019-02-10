@@ -8,15 +8,20 @@ import processing.core.PApplet;
  * Video exporter class
  */
 public class Record {
+	/** Main Processing Applet */
 	private PApplet applet;
-	
+	/** Video exporter */
 	private VideoExport videoExport;
+	/** true : is recording */
 	private boolean isRecording;
-	
+	/** index of the current video */
 	private int videoIndex;
 	
 	
-	
+	/**
+	 * Create a Record instance
+	 * @param applet
+	 */
 	public Record(PApplet applet) {
 		this.applet = applet;
 		
@@ -85,6 +90,7 @@ public class Record {
 	/**
 	 * On key Pressed
 	 * @param key
+	 * 	Key pressed
 	 */
 	public void keyPressed(char key) {
 		if(key == Constants.KEY_START_RECORDING) {
