@@ -170,10 +170,10 @@ public class Point {
 			m.textFont(Constants.mainFont, 16);
 			p.line(0, this.pos.y, this.pos.x, this.pos.y);
 			if(this.pos.x > 0) {
-				p.text("y=" + new DecimalFormat("#.##").format(this.pos.y), -1.05f, this.pos.y - 0.1f);
+				p.text("y=" + new DecimalFormat("#.##").format(this.pos.y), -1.25f, this.pos.y - 0.1f);
 			}
 			else {
-				p.text("y=" + new DecimalFormat("#.##").format(this.pos.y), -1.05f, this.pos.y - 0.4f);
+				p.text("y=" + new DecimalFormat("#.##").format(this.pos.y), -1.50f, this.pos.y - 0.4f);
 			}
 		}
 	}
