@@ -7,11 +7,18 @@ public class LinearFunction extends Function {
 	private float a;
 	private float b;
 	
-	public LinearFunction(Plot plot) {
+	/**
+	 * Create a linear function f(x) = a*x + b
+	 * @param plot
+	 * 	Plot of the function
+	 * @param a
+	 * @param b
+	 */
+	public LinearFunction(Plot plot, float a, float b) {
 		super(plot, null, null, 0.01f, new Vector(218, 195, 22));
 		
-		this.a = 2;
-		this.b = 0;
+		this.a = a;
+		this.b = b;
 	}
 	
 	@Override

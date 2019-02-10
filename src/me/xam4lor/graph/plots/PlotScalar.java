@@ -9,7 +9,7 @@ import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.objects.Point;
 import me.xam4lor.mathematics.objects.Scalar;
 
-public class ScalarPlot extends Plot {
+public class PlotScalar extends Plot {
 	/** List of all the scalar */
 	private List<Scalar> scal;
 	
@@ -26,7 +26,7 @@ public class ScalarPlot extends Plot {
 	 * @param ymax
 	 * 	Max Y value rendered
 	 */
-	public ScalarPlot(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
+	public PlotScalar(ProcessingMain m, int xmin, int xmax, int ymin, int ymax) {
 		super(m, xmin, xmax, ymin, ymax);
 		
 		scal = new ArrayList<Scalar>();
@@ -70,7 +70,7 @@ public class ScalarPlot extends Plot {
 			int yCur = this.ymin;
 			
 			while(yCur <= this.ymax) {
-				this.scal.add(new Scalar(new Point(xCur, yCur), 0.1f, xCur + yCur));
+				this.scal.add(new Scalar(new Point(xCur, yCur, false, 255, 255, 255), 0.1f, xCur + yCur));
 				yCur += precisionLevel;
 			}
 			

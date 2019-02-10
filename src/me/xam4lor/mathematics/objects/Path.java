@@ -14,18 +14,28 @@ public class Path {
 	
 	
 	/**
-	 * Create a Path (values must be the init position of the point)
-	 * @param x
-	 * 	Path init x
-	 * @param y
-	 * 	Path init y
+	 * Create a Path (by default, it begins at x=0 and y=0)
 	 */
-	public Path(float x, float y) {
+	public Path() {
 		this.path = new HashMap<Float, Vector>();
 		this.times = new ArrayList<Float>();
 		
-		this.addKeyFrame(0f, x, y);
+		this.addKeyFrame(0f, 0, 0);
 	}
+	
+	
+	/**
+	 * Init the path (values must be the init position of the point)
+	 * @param x
+	 * 	x init
+	 * @param y
+	 * 	y init
+	 */
+	public void initAt(float x, float y) {
+		this.getVectorForID(0).x = x;
+		this.getVectorForID(0).y = y;
+	}
+	
 	
 	
 	/**
@@ -36,10 +46,12 @@ public class Path {
 	 * 	X position of the key frame
 	 * @param y
 	 * 	Y position of the key frame
+	 * @return the path
 	 */
-	public void addKeyFrame(float time, float x, float y) {
+	public Path addKeyFrame(float time, float x, float y) {
 		this.path.put(time, new Vector(x, y));
 		this.times.add(time);
+		return this;
 	}
 	
 	
@@ -66,5 +78,13 @@ public class Path {
 	public boolean isIndex(int targetIndex) {
 		if(targetIndex > this.times.size() - 1) return false;
 		return true;
+	}
+	
+	
+	
+	
+	
+	public static Path createPath() {
+		return new Path();
 	}
 }

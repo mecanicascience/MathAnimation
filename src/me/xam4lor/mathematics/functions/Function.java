@@ -5,6 +5,7 @@ import java.util.List;
 
 import me.xam4lor.graph.Plot;
 import me.xam4lor.graph.Vector;
+import me.xam4lor.main.ProcessingMain;
 import me.xam4lor.mathematics.objects.Point;
 
 public abstract class Function {
@@ -71,7 +72,7 @@ public abstract class Function {
 		
 		float xCur = xMin - 1;
 		while(xCur < xMax + 1) {
-			this.points.add(new Point(xCur, this.getYOfX(xCur)));
+			this.points.add(new Point(xCur, this.getYOfX(xCur), false, 255, 255, 255));
 			xCur += this.precisionLevel;
 		}
 	}
@@ -117,4 +118,20 @@ public abstract class Function {
 	public float getR() { return this.color.x; }
 	public float getG() { return this.color.y; }
 	public float getB() { return this.color.z; }
+
+
+
+	public void draw(ProcessingMain m, Plot plot) {
+		Point[] a = this.getPoints().toArray(new Point[this.getPoints().size()]);
+		for (int i = 0; i < a.length - 1; i++) {
+			Point p = a[i];
+
+			if(!this.isCoupleInInterval(p.getX(), p.getY())) continue;
+			
+			m.noFill();
+			m.stroke(this.getR(), this.getG(), this.getB());
+			m.strokeWeight(2);
+			plot.line(p.getX(), p.getY(), a[i + 1].getX(), a[i + 1].getY());
+		}
+	}
 }

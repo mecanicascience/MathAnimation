@@ -40,12 +40,14 @@ public class Point {
 	 * 	Green color value
 	 * @param b
 	 * 	Blue color value
+	 * @param path
+	 * 	Path of the point
 	 * @param showXGraphC
 	 * 	true : show X position on the graph
 	 * @param showYGraphC
 	 * 	true : show Y position on the graph
 	 */
-	public Point(float x, float y, boolean showName, float r, float g, float b, boolean showXGraphC, boolean showYGraphC) {
+	public Point(float x, float y, boolean showName, float r, float g, float b, Path path, boolean showXGraphC, boolean showYGraphC) {
 		this.pos = new Vector(x, y);
 		this.col = new Vector(r, g, b);
 		
@@ -53,12 +55,14 @@ public class Point {
 		this.showXGraphC = showXGraphC;
 		this.showYGraphC = showYGraphC;
 		
-		// TODO : put the path in the point parameters
-		this.animated = true;
-		this.path = new Path(x, y);
-		this.path.addKeyFrame(10, 6, 6);
-		this.path.addKeyFrame(15, -5, -5);
-		this.path.addKeyFrame(20, 5, 5);
+		
+		if(path != null) {
+			this.animated = true;
+			path.initAt(x, y);
+		}
+		else this.animated = false;
+		this.path = path;
+		
 		
 		this.targetIndex = 1;
 		this.lastPosX = x;
@@ -78,11 +82,12 @@ public class Point {
 	 * 	Green color value
 	 * @param b
 	 * 	Blue color value
+	 * @param path
+	 * 	Path of the point
 	 */
-	public Point(float x, float y, boolean showName, float r, float g, float b) {
-		this(x, y, showName, r, g, b, false, false);
+	public Point(float x, float y, boolean showName, float r, float g, float b, Path path) {
+		this(x, y, showName, r, g, b, path, false, false);
 	}
-	
 	
 	/**
 	 * Create a Point
@@ -90,19 +95,15 @@ public class Point {
 	 * @param y
 	 * @param showName
 	 * 	true : display the point name
+	 * @param r
+	 * 	Red color value
+	 * @param g
+	 * 	Green color value
+	 * @param b
+	 * 	Blue color value
 	 */
-	public Point(float x, float y, boolean showName) {
-		this(x, y, showName, 255, 255, 255);
-	}
-	
-	
-	/**
-	 * Create a white Point
-	 * @param x
-	 * @param y
-	 */
-	public Point(float x, float y) {
-		this(x, y, false, 255, 255, 255);
+	public Point(float x, float y, boolean showName, float r, float g, float b) {
+		this(x, y, showName, r, g, b, null, false, false);
 	}
 	
 	

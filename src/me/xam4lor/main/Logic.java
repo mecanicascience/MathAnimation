@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.xam4lor.graph.Plot;
-import me.xam4lor.graph.plots.FunctionPlot;
+import me.xam4lor.graph.plots.Plot2D;
+import me.xam4lor.mathematics.functions.LinearFunction;
+import me.xam4lor.mathematics.functions.TestFunction;
+import me.xam4lor.mathematics.objects.Path;
 import me.xam4lor.mathematics.objects.Point;
 import me.xam4lor.mathematics.objects.Scalar;
 import me.xam4lor.utils.Constants;
@@ -41,11 +44,16 @@ public class Logic {
 	 * Instanciate the main logic
 	 */
 	private void instanciate() {
-		this.plot = new FunctionPlot(m, -10, 20, -10, 20);
-		// this.plot = new ScalarPlot(m, -10, 10, -10, 10);
+		this.plot = new Plot2D(m, -10, 20, -10, 20);
+		this.plot.setFunctions(new LinearFunction(this.plot, 2, 3), new TestFunction(this.plot));
 		
+
+		Path path = Path.createPath()
+			.addKeyFrame(3, 1, 1)
+			.addKeyFrame(7, -5, -5)
+			.addKeyFrame(13, 5, 5);
+		this.points.add(new Point(1, 1, true, 253, 57, 237, path, true, true));
 		
-		this.points.add(new Point(1, 1, true, 253, 57, 237, true, true));
 		// this.scalars.add(new Scalar(this.points.get(0), 2, PConstants.PI / 4));
 	}
 	

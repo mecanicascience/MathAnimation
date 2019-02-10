@@ -1,6 +1,10 @@
 package me.xam4lor.graph;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.xam4lor.main.ProcessingMain;
+import me.xam4lor.mathematics.functions.Function;
 import me.xam4lor.mathematics.objects.Point;
 import me.xam4lor.mathematics.objects.Scalar;
 import me.xam4lor.utils.Constants;
@@ -13,6 +17,10 @@ public abstract class Plot {
 	protected int xmin, xmax, ymin, ymax;
 	/** x and y plot units */
 	protected int xUnit, yUnit, offsetX, offsetY;
+	/** List of all the plot functions */
+	protected List<Function> functions;
+	
+	
 	
 	/**
 	 * Plot instance
@@ -42,6 +50,8 @@ public abstract class Plot {
 		
 		this.offsetX = -(Math.abs(xmax) - Math.abs(xmin)) * xUnit;
 		this.offsetY =  (Math.abs(ymax) - Math.abs(ymin)) * yUnit;
+		
+		this.functions = new ArrayList<Function>();
 	}
 	
 	
@@ -55,8 +65,9 @@ public abstract class Plot {
 	 * 	List of all scalars
 	 */
 	public void update(Point[] points, Scalar[] scalars) {
-		for (Point p : points) p.update();
+		for (Function f : functions) f.update();
 		for (Scalar s : scalars) s.update();
+		for (Point p : points) p.update();
 	}
 
 	/**
@@ -73,9 +84,23 @@ public abstract class Plot {
 	public void draw(boolean showAxes, boolean showGrid, Point[] points, Scalar[] scalars) {
 		if(showAxes) this.showAxes(1, showGrid);
 		
-		for (Point p : points) p.draw(m, this);
+		for (Function f : functions) f.draw(m, this);
 		for (Scalar s : scalars) s.draw(m, this);
+		for (Point p : points) p.draw(m, this);
 	}
+	
+	
+	
+	/**
+	 * Set Plot functions
+	 * @param functions
+	 * 	List of all functions
+	 */
+	public void setFunctions(Function... functions) {
+		for (Function f : functions) this.functions.add(f);
+	}
+	
+	
 	
 	
 	
