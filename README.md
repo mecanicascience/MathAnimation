@@ -1,4 +1,4 @@
-# MathAnimation
+# MathAnimation - Oudated, see [Mathim](https://github.com/mecanicascience/Mathim)
 ## Description
 A Java code that allow Math Animation inspired by 'manim' Python library.<br />
 You can draw functions, points and animate them based on time.<br />
